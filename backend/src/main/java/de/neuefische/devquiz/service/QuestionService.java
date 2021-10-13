@@ -20,16 +20,16 @@ public class QuestionService {
     }
 
     public List<Question> getAllQuestions() {
-        return questionRepo.getAllQuestions();
+        return questionRepo.findAll();
     }
 
     public Question addQuestion(Question newQuestion){
-        return questionRepo.addQuestion(newQuestion);
+        return questionRepo.save(newQuestion);
     }
 
 
     public Question get(String id) {
-        Optional<Question> optionalQuestion = questionRepo.get(id);
+        Optional<Question> optionalQuestion = questionRepo.findById(id);
 
         if (optionalQuestion.isEmpty()) {
             throw new NoSuchElementException("Question with id:" + id + " not found!");
