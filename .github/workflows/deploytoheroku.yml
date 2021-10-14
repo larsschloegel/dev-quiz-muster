@@ -53,6 +53,7 @@ jobs:
     needs: build-backend
     environment:
       name: production-heroku
+      url: https://git.heroku.com/rem-21-4-quiz-muster.git
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
     steps:
