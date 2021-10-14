@@ -24,7 +24,7 @@ public class DevQuizController {
         return questionService.getAllQuestions();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Question get(@PathVariable String id) {
         return questionService.get(id);
     }
