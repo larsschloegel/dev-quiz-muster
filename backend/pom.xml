@@ -41,7 +41,7 @@
     </dependencies>
 
     <build>
-        <finalName>dev-quiz-muster</finalName>
+        <finalName>devquizmuster</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
