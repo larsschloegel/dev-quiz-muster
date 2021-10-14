@@ -60,7 +60,6 @@ class DevQuizControllerTest {
                 new Question("3", "Question with ID '3'", List.of())
         ));
 
-        verify(idService, times(3)).generateId();
     }
 
     @Test
@@ -75,7 +74,7 @@ class DevQuizControllerTest {
         // THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
         assertThat(responseEntity.getBody(), is(new Question("302", "Question with ID '302'", List.of())));
-        verify(idService).generateId();
+
     }
 
     @Test
@@ -100,6 +99,6 @@ class DevQuizControllerTest {
         assertNotNull(persistedQuestion);
         assertThat(persistedQuestion.getId(), is(questionToAdd.getId()));
         assertThat(persistedQuestion.getQuestionText(), is(questionToAdd.getQuestionText()));
-        verify(idService).generateId();
+
     }
 }
