@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 
 @Slf4j
 @ControllerAdvice
-public class ControllerAdvise extends ResponseEntityExceptionHandler {
+public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ApiError> handleNoSuchElementException(NoSuchElementException ex){
