@@ -13,3 +13,9 @@ export function addQuestion(newQuestion) {
     .then(response => response.data)
     .catch(console.error)
 }
+export function validateAnswers(validationObject){
+  return axios
+      .post('/api/question/validate', validationObject)
+      .then(response => response.data)
+      .catch(console.error)
+}

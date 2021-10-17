@@ -1,10 +1,10 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-function Answer({ answer, questionId }) {
+function Answer({ answer, questionId, handleChoice}) {
   return (
     <AnswerContainer>
-      <input type="radio" name={questionId} />
+      <input type="radio" name={questionId} onChange={() => handleChoice(answer.id)}/>
       <h4>{answer.answerText}</h4>
     </AnswerContainer>
   )

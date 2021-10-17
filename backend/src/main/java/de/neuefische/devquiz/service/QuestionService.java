@@ -1,5 +1,6 @@
 package de.neuefische.devquiz.service;
-
+import de.neuefische.devquiz.model.Answer;
+import de.neuefische.devquiz.model.ValidationInfo;
 import de.neuefische.devquiz.model.Question;
 import de.neuefische.devquiz.repo.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ public class QuestionService {
         return questionRepo.save(newQuestion);
     }
 
-
     public Question get(String id) {
         Optional<Question> optionalQuestion = questionRepo.findById(id);
 
@@ -37,4 +37,17 @@ public class QuestionService {
 
         return optionalQuestion.get();
     }
+
+    public ValidationInfo validateQuestion(ValidationInfo InputQuestionIdAndAnswerId) {
+        Optional<Question> questionToCheck = questionRepo.findById(InputQuestionIdAndAnswerId.getQuestionID());
+        List<Answer> allAnswer = questionToCheck.get().getAnswers();
+        ValidationInfo validationAnswer= new ValidationInfo(InputQuestionIdAndAnswerId.getQuestionID(), null);
+        for (Answer answer : allAnswer){
+            if(answer.getIsCorrect()){
+                validationAnswer.setAnswerID(answer.getId());
+            }
+        }
+        return validationAnswer;
+    }
+
 }
