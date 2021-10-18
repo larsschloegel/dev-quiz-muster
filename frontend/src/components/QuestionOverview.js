@@ -1,16 +1,14 @@
 import Answer from "./Answer";
 import styled from "styled-components";
 
-export default function QuestionLight({question}) {
-
-    const sendChosenId = () => {}
+export default function QuestionOverview({question}) {
 
     return (
         <QuestionContainer>
                   <h3>{question.questionText}</h3>
                 <AnswerContainer>
                     {question.answers.map(answer => (
-                        <Answer answer={answer} key={answer.id} questionId={question.id} sendChosenId={sendChosenId}/>
+                        <Answer answer={answer} key={answer.id} questionId={question.id} sendChosenId={() => {}}/>
                     ))}
                 </AnswerContainer>
         </QuestionContainer>

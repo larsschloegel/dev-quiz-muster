@@ -11,14 +11,12 @@ export default function AddQuestion({saveQuestion}) {
             {
                 id: "1",
                 answerText: '',
-                correct: false,
-                chosen: false
+                correct: false
             },
             {
                 id: "2",
                 answerText: '',
-                correct: false,
-                chosen: false
+                correct: false
             },
         ],
     })
@@ -30,9 +28,6 @@ export default function AddQuestion({saveQuestion}) {
     }
 
     const handleAnswerCorrectStatusChange = (index) => {
-        //index = Position im Fragearray, die "richtig" ist
-        console.log("handleStatus index: " + index)
-
         const newQuestionObject = {...question}
 
         for (let i = 0; i < newQuestionObject.answers.length; i++) {
@@ -41,10 +36,8 @@ export default function AddQuestion({saveQuestion}) {
             } else {
                 newQuestionObject.answers[i].correct = false;
             }
-            //newQuestionObject.answers[i].correct = (i === index)
         }
         setQuestions(newQuestionObject)
-        console.log("new Questions object " + newQuestionObject)
     }
 
     const createNewAnswerOption = () => {

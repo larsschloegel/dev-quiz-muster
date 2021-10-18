@@ -5,15 +5,11 @@ import {useState} from "react";
 
 function Question({question, checkIfCorrect, answerIsCorrect, playNext, resetAnswers}) {
 
-    const [chosenId, setChosenId] = useState("123456789")
+    const [chosenId, setChosenId] = useState("")
 
     const validateAnswer = event => {
         event.preventDefault()
         checkIfCorrect(question, chosenId)
-    }
-
-    const sendChosenId = (id) => {
-        setChosenId(id)
     }
 
     const playNextQuestion = () => {
@@ -27,7 +23,7 @@ function Question({question, checkIfCorrect, answerIsCorrect, playNext, resetAns
                 <h3>{question.questionText}</h3>
                 <AnswerContainer>
                     {question.answers.map(answer => (
-                        <Answer answer={answer} key={answer.id} questionId={question.id} sendChosenId={sendChosenId}/>
+                        <Answer answer={answer} key={answer.id} questionId={question.id} sendChosenId={setChosenId}/>
                     ))}
 
                     {answerIsCorrect === undefined && <div>Please choose an answer...</div>}
@@ -58,7 +54,6 @@ const AnswerContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 0 0;
   grid-template-areas:
     '. .'
     '. .';

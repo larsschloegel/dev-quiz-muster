@@ -22,13 +22,13 @@ export function getQuestion(){
 }
 export function checkAnswer(question, chosenId){
 
-  const tryFrontend = {
+  const answerValidation = {
     question : question,
     chosenId : chosenId
   }
 
   return axios
-      .post('/api/question/quiz', tryFrontend )
+      .post('/api/question/quiz', answerValidation )
       .then(response => response.data)
       .catch(console.error)
 }

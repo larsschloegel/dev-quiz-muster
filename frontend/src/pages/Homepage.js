@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import QuestionLight from "../components/QuestionLight";
+import QuestionOverview from "../components/QuestionOverview";
 
 function Homepage({ questions }) {
 
@@ -9,7 +9,7 @@ function Homepage({ questions }) {
   return (
     <QuestionsContainer>
       {questions.map(question => (
-        <QuestionLight question={question} key={question.id} sendChosenId={sendChosenId} />
+        <QuestionOverview question={question} key={question.id} sendChosenId={sendChosenId} />
       ))}
     </QuestionsContainer>
   )

@@ -39,18 +39,34 @@ class PlayControllerTest {
     void testGetQuestion() {
 
         //GIVEN
-        questionRepo.save(new Question("1", "Question with ID '1'", List.of()));
+        Question expected = Question.builder()
+                .id("1")
+                .questionText("Question with ID '1'")
+                .answers(List.of(
+                        Answer.builder()
+                                .id("ABC")
+                                .answerText("Antworttext")
+                                .correct(true)
+                                .build(),
+                        Answer.builder()
+                                .id("XYZ")
+                                .answerText("Meine Antwort")
+                                .correct(false)
+                                .build()))
+                .build();
+
+        questionRepo.save(expected);
 
         //WHEN
         ResponseEntity<Question> responseEntity = testRestTemplate.getForEntity("/api/question/quiz", Question.class);
 
         //THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-        assertThat(responseEntity.getBody(), is(new Question("1", "Question with ID '1'", List.of())));
+        assertThat(responseEntity.getBody(), is(expected));
     }
 
     @Test
-    @DisplayName("Should return a true")
+    @DisplayName("Should return true for a correctly chosen answer")
     void testCheckAnswerTrue() {
 
         //GIVEN
@@ -81,7 +97,7 @@ class PlayControllerTest {
     }
 
     @Test
-    @DisplayName("Should return a false")
+    @DisplayName("Should return false for a incorrectly chosen answer")
     void testCheckAnswerFalse() {
 
         //GIVEN

@@ -12,11 +12,16 @@ function App() {
 
     const {questions, saveQuestion} = useQuestions()
     const [playQuestion, setPlayQuestion] = useState()
-    const [playNextQuestion, setPlayNextQuestion] = useState(false)
 
-    useEffect(()=>{getQuestion().then(result => {setPlayQuestion(result)})}, [playNextQuestion]);
+    const getNextQuestion = () => {
+        getQuestion().then(result => {
+            setPlayQuestion(result)
+        })
+    }
 
-    const playNext = () => setPlayNextQuestion(!(playNextQuestion));
+    useEffect(() => {
+        getNextQuestion();
+    }, []);
 
      return (
         <div className="App">
@@ -29,7 +34,7 @@ function App() {
                     <AddQuestion saveQuestion={saveQuestion}/>
                 </Route>
                 <Route path="/play">
-                    {playQuestion && <Play question={playQuestion} playNext={playNext}/>}
+                    {playQuestion && <Play question={playQuestion} playNext={getNextQuestion}/>}
                 </Route>
             </Switch>
         </div>

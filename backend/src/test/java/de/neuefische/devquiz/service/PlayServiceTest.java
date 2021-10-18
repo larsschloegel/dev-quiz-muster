@@ -20,7 +20,7 @@ class PlayServiceTest {
 
     @Test
     @DisplayName("returns a (random) Question, here the only one")
-    void getQuestion() {
+    void getRandomQuestion() {
         //GIVEN
         Question expected = new Question("1", "Frage?", List.of());
         List<Question> withOneExpected = List.of(expected);
