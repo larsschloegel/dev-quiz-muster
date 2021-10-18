@@ -1,9 +1,8 @@
 package de.neuefische.devquiz.controller;
 
-import de.neuefische.devquiz.model.FrontendTry;
+import de.neuefische.devquiz.model.AnswerValidation;
 import de.neuefische.devquiz.model.Question;
 import de.neuefische.devquiz.service.PlayService;
-import de.neuefische.devquiz.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ public class PlayController {
     }
 
     @PostMapping()
-    public Boolean checkAnswer(@RequestBody FrontendTry frontendTry) {
-        return playService.checkAnswer(frontendTry);
+    public Boolean checkAnswer(@RequestBody AnswerValidation answerValidation) {
+        return playService.checkAnswer(answerValidation);
     }
 }

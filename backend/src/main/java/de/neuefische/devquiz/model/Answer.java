@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class Answer {
-    private String id = createUUID();
+    private String id;
     private String answerText;
     private Boolean correct;
 

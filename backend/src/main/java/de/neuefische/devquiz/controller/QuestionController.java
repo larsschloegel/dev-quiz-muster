@@ -1,6 +1,5 @@
 package de.neuefische.devquiz.controller;
 
-import de.neuefische.devquiz.model.FrontendTry;
 import de.neuefische.devquiz.model.Question;
 import de.neuefische.devquiz.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;

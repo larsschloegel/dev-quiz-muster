@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FrontendTry {
+public class AnswerValidation {
     private Question question;
     private String chosenId;
 }

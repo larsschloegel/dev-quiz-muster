@@ -1,7 +1,6 @@
 package de.neuefische.devquiz.service;
 
 import de.neuefische.devquiz.model.Answer;
-import de.neuefische.devquiz.model.FrontendTry;
 import de.neuefische.devquiz.model.Question;
 import de.neuefische.devquiz.repo.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,14 @@ public class QuestionService {
     }
 
     public Question addQuestion(Question newQuestion) {
+        for (Answer answer: newQuestion.getAnswers()){
+            answer.setId(createUUID());
+        }
         return questionRepo.save(newQuestion);
+    }
+
+    private String createUUID() {
+        return UUID.randomUUID().toString();
     }
 
     public Question get(String id) {

@@ -1,7 +1,7 @@
 package de.neuefische.devquiz.controller;
 
 import de.neuefische.devquiz.model.Answer;
-import de.neuefische.devquiz.model.FrontendTry;
+import de.neuefische.devquiz.model.AnswerValidation;
 import de.neuefische.devquiz.model.Question;
 import de.neuefische.devquiz.repo.QuestionRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -56,19 +57,21 @@ class PlayControllerTest {
         Answer answer1 = new Answer();
         answer1.setAnswerText("True answer");
         answer1.setCorrect(true);
+        answer1.setId(UUID.randomUUID().toString());
 
         Answer answer2 = new Answer();
         answer2.setAnswerText("False answer");
         answer2.setCorrect(false);
+        answer2.setId(UUID.randomUUID().toString());
 
         Question question = new Question("1", "Frage?", List.of(answer1, answer2));
         String chosenId = answer1.getId();
 
         questionRepo.save(question);
-        FrontendTry frontendTry = new FrontendTry(question, chosenId);
+        AnswerValidation answerValidation = new AnswerValidation(question, chosenId);
 
         //WHEN
-        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/play", frontendTry, Boolean.class );
+        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/play", answerValidation, Boolean.class );
 
         //THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
@@ -85,19 +88,21 @@ class PlayControllerTest {
         Answer answer1 = new Answer();
         answer1.setAnswerText("True answer");
         answer1.setCorrect(true);
+        answer1.setId(UUID.randomUUID().toString());
 
         Answer answer2 = new Answer();
         answer2.setAnswerText("False answer");
         answer2.setCorrect(false);
+        answer2.setId(UUID.randomUUID().toString());
 
         Question question = new Question("1", "Frage?", List.of(answer1, answer2));
         String chosenId = answer2.getId();
 
         questionRepo.save(question);
-        FrontendTry frontendTry = new FrontendTry(question, chosenId);
+        AnswerValidation answerValidation = new AnswerValidation(question, chosenId);
 
         //WHEN
-        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/play", frontendTry, Boolean.class );
+        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/play", answerValidation, Boolean.class );
 
         //THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));

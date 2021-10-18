@@ -7,7 +7,7 @@ function Question({question, checkIfCorrect, answerIsCorrect, playNext, resetAns
 
     const [chosenId, setChosenId] = useState("123456789")
 
-    const handleClick = event => {
+    const validateAnswer = event => {
         event.preventDefault()
         checkIfCorrect(question, chosenId)
     }
@@ -23,7 +23,7 @@ function Question({question, checkIfCorrect, answerIsCorrect, playNext, resetAns
 
     return (
         <QuestionContainer>
-            <form onSubmit={handleClick}>
+            <form onSubmit={validateAnswer}>
                 <h3>{question.questionText}</h3>
                 <AnswerContainer>
                     {question.answers.map(answer => (
