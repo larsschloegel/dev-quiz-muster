@@ -39,11 +39,16 @@ public class QuestionService {
     }
 
     public ValidationInfo validateQuestion(ValidationInfo InputQuestionIdAndAnswerId) {
-        Optional<Question> questionToCheck = questionRepo.findById(InputQuestionIdAndAnswerId.getQuestionID());
+       Optional<Question> questionToCheck = questionRepo.findById(InputQuestionIdAndAnswerId.getQuestionID());
+
+        if (questionToCheck.isEmpty()){
+            throw new NoSuchElementException("Question with id: " + InputQuestionIdAndAnswerId.getQuestionID() +
+                    " not found!");
+        }
         List<Answer> allAnswer = questionToCheck.get().getAnswers();
         ValidationInfo validationAnswer= new ValidationInfo(InputQuestionIdAndAnswerId.getQuestionID(), null);
         for (Answer answer : allAnswer){
-            if(answer.getIsCorrect()){
+            if(answer.isCorrect()){
                 validationAnswer.setAnswerID(answer.getId());
             }
         }

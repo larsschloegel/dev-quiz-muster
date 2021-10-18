@@ -1,6 +1,8 @@
 package de.neuefische.devquiz.service;
 
+import de.neuefische.devquiz.model.Answer;
 import de.neuefische.devquiz.model.Question;
+import de.neuefische.devquiz.model.ValidationInfo;
 import de.neuefische.devquiz.repo.QuestionRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -58,5 +60,21 @@ class QuestionServiceTest {
         //THEN
         assertEquals(expected, actual);
         verify(questionRepo).save(expected);
+    }
+
+    @Test
+    void validateRightQuestionTest(){
+        Question testDataSet = new Question("616d247b8583c4f3c875b0e7", "a", List.of(
+                new Answer("bc0ff0d7-9a23-4708-b545-07a6c14f1d24", "a", true),
+                new Answer("3c0b96e0-547c-4944-84f2-80e48e075c95", "b", false)
+        ));
+        when(questionRepo.findById("616d247b8583c4f3c875b0e7")).thenReturn(Optional.of(testDataSet));
+        //Given
+        ValidationInfo inputValidation = new ValidationInfo("616d247b8583c4f3c875b0e7", "bc0ff0d7-9a23-4708-b545-07a6c14f1d24");
+        //When
+        ValidationInfo actual = questionService.validateQuestion(inputValidation);
+        //Then
+        ValidationInfo expected = new ValidationInfo("616d247b8583c4f3c875b0e7", "bc0ff0d7-9a23-4708-b545-07a6c14f1d24");
+        assertEquals(expected, actual);
     }
 }

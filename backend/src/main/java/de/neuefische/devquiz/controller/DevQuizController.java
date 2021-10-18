@@ -35,7 +35,7 @@ public class DevQuizController {
         return questionService.addQuestion(newQuestion);
     }
 
-    @PostMapping("/api/question/validate")
+    @PostMapping("/validate")
     public ValidationInfo validateQuestion(@RequestBody ValidationInfo InputQuestionIdAndAnswerId) {
         return questionService.validateQuestion(InputQuestionIdAndAnswerId);
     }
