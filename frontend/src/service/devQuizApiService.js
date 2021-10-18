@@ -16,7 +16,7 @@ export function addQuestion(newQuestion) {
 
 export function getQuestion(){
   return axios
-      .get('/api/question/play')
+      .get('/api/question/quiz')
       .then(response => response.data)
       .catch(console.error)
 }
@@ -28,7 +28,7 @@ export function checkAnswer(question, chosenId){
   }
 
   return axios
-      .post('/api/question/play', tryFrontend )
+      .post('/api/question/quiz', tryFrontend )
       .then(response => response.data)
       .catch(console.error)
 }

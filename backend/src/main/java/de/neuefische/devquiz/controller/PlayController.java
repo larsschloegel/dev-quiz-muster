@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/question/play")
+@RequestMapping("/api/question/quiz")
 public class PlayController {
 
     private final PlayService playService;
