@@ -1,6 +1,8 @@
 package de.neuefische.devquiz.controller;
 
+import de.neuefische.devquiz.model.Answer;
 import de.neuefische.devquiz.model.Question;
+import de.neuefische.devquiz.model.ValidationInfo;
 import de.neuefische.devquiz.repo.QuestionRepo;
 import de.neuefische.devquiz.service.IdService;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,7 +101,29 @@ class DevQuizControllerTest {
         assertNotNull(persistedQuestion);
         assertThat(persistedQuestion.getId(), is(questionToAdd.getId()));
         assertThat(persistedQuestion.getQuestionText(), is(questionToAdd.getQuestionText()));
+    }
 
+    @Test
+    @DisplayName("Should return the right answer")
+    void testValidateQuestion() {
+        // GIVEN
+        Question questionToValidate = new Question("302", "Question with ID '302'", List.of(
+                new Answer("bc0ff0d7-9a23-4708-b545-07a6c14f1d24", "a", true)
+        ));
+        ResponseEntity<Question> postResponseEntity = testRestTemplate.postForEntity("/api" +
+                "/question", questionToValidate, Question.class);
+        ValidationInfo validationInfo = new ValidationInfo("302" ,"bc0ff0d7-9a23-4708-b545" +
+                "-07a6c14f1d24");
+        // WHEN
+        ResponseEntity<ValidationInfo> postResponseValidationInfo =
+                testRestTemplate.postForEntity("/api/question/validate", validationInfo,
+                        ValidationInfo.class);
+        ValidationInfo actual = postResponseValidationInfo.getBody();
+
+        // THEN
+        assertThat(postResponseValidationInfo.getStatusCode(), is(HttpStatus.OK));
+        assertNotNull(actual);
+        assertThat(actual, is(validationInfo));
     }
 
 }
