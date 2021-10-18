@@ -27,7 +27,7 @@ class PlayServiceTest {
         when(questionRepo.findAll()).thenReturn(withOneExpected);
 
         //WHEN
-        Question actual = playService.getQuestion();
+        Question actual = playService.getRandomQuestion();
 
         //THEN
         assertEquals(expected, actual);

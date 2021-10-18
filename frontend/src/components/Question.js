@@ -30,16 +30,14 @@ function Question({question, checkIfCorrect, answerIsCorrect, playNext, resetAns
                         <Answer answer={answer} key={answer.id} questionId={question.id} sendChosenId={sendChosenId}/>
                     ))}
 
-                    {answerIsCorrect === undefined ? <div>Please chose an answer...</div> :
-                        answerIsCorrect === true ? <AnswerIsCorrect>Correct</AnswerIsCorrect> :
-                            <AnswerIsWrong>Wrong! Try again</AnswerIsWrong>}
+                    {answerIsCorrect === undefined && <div>Please choose an answer...</div>}
+                    {answerIsCorrect === true && <AnswerIsCorrect>Correct</AnswerIsCorrect> }
+                    {answerIsCorrect === false && <AnswerIsWrong>Wrong! Try again</AnswerIsWrong>}
 
                 </AnswerContainer>
                 <CheckButton>Check Answer</CheckButton>
 
-                {answerIsCorrect === undefined? <></> :
-                    answerIsCorrect === true ?<CheckButton onClick={playNextQuestion}>Next Question</CheckButton> :
-                        <></>}
+                {answerIsCorrect === true && <CheckButton onClick={playNextQuestion}>Next Question</CheckButton> }
             </form>
         </QuestionContainer>
     )

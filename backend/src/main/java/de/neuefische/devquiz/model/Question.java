@@ -3,6 +3,7 @@ package de.neuefische.devquiz.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Question {
 
+    @Id
     private String id;
     private String questionText;
     private List<Answer> answers;

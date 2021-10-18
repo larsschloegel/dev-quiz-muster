@@ -19,7 +19,7 @@ public class PlayController {
 
     @GetMapping()
     public Question getQuestion() {
-        return playService.getQuestion();
+        return playService.getRandomQuestion();
     }
 
     @PostMapping()

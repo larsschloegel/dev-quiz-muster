@@ -42,7 +42,7 @@ class PlayControllerTest {
         questionRepo.save(new Question("1", "Question with ID '1'", List.of()));
 
         //WHEN
-        ResponseEntity<Question> responseEntity = testRestTemplate.getForEntity("/api/question/play", Question.class);
+        ResponseEntity<Question> responseEntity = testRestTemplate.getForEntity("/api/question/quiz", Question.class);
 
         //THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
@@ -71,7 +71,7 @@ class PlayControllerTest {
         AnswerValidation answerValidation = new AnswerValidation(question, chosenId);
 
         //WHEN
-        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/play", answerValidation, Boolean.class );
+        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/quiz", answerValidation, Boolean.class );
 
         //THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
@@ -102,7 +102,7 @@ class PlayControllerTest {
         AnswerValidation answerValidation = new AnswerValidation(question, chosenId);
 
         //WHEN
-        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/play", answerValidation, Boolean.class );
+        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/quiz", answerValidation, Boolean.class );
 
         //THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
