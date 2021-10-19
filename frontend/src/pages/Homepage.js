@@ -1,12 +1,15 @@
 import * as React from 'react'
-import Question from '../components/Question'
 import styled from 'styled-components'
+import QuestionOverview from "../components/QuestionOverview";
 
 function Homepage({ questions }) {
+
+  const sendChosenId = () => {}
+
   return (
     <QuestionsContainer>
       {questions.map(question => (
-        <Question question={question} key={question.id} />
+        <QuestionOverview question={question} key={question.id} sendChosenId={sendChosenId} />
       ))}
     </QuestionsContainer>
   )

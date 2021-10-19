@@ -20,6 +20,7 @@ export default function NewQuestion({
       <section>
         {answers.map((answer, index) => (
           <NewQuestionAnswerItem answer={answer}
+                                 key={answer.id}
                                  index={index}
                                  handleAnswerTextInput={handleAnswerTextInput}
                                  handleAnswerCorrectStatusChange={handleAnswerCorrectStatusChange}/>

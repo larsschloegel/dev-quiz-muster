@@ -13,9 +13,22 @@ export function addQuestion(newQuestion) {
     .then(response => response.data)
     .catch(console.error)
 }
-export function validateAnswers(validationObject){
+
+export function getQuestion(){
   return axios
-      .post('/api/question/validate', validationObject)
+      .get('/api/question/quiz')
+      .then(response => response.data)
+      .catch(console.error)
+}
+export function checkAnswer(question, chosenId){
+
+  const answerValidation = {
+    question : question,
+    chosenId : chosenId
+  }
+
+  return axios
+      .post('/api/question/quiz', answerValidation )
       .then(response => response.data)
       .catch(console.error)
 }

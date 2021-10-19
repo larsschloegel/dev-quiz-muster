@@ -2,38 +2,39 @@ import * as React from 'react'
 import Answer from './Answer'
 import styled from 'styled-components'
 import {useState} from "react";
-import {validateAnswers} from "../service/devQuizApiService";
 
-function Question({question}) {
+function Question({question, checkIfCorrect, answerIsCorrect, playNext, resetAnswers}) {
 
-    const [answerIdState, setAnswerIdState] = useState("")
+    const [chosenId, setChosenId] = useState("")
 
-    const handleChoice = answerId => setAnswerIdState(answerId);
+    const validateAnswer = event => {
+        event.preventDefault()
+        checkIfCorrect(question, chosenId)
+    }
 
-    function validateAnswer() {
-        const validateObject = {
-            questionID: question.id,
-            answerID: answerIdState
-        }
-        validateAnswers(validateObject).then(result => {
-            if (JSON.stringify(result) === JSON.stringify(validateObject)) {
-                console.log("Stimmt")
-            } else {
-                console.log("Stimmt nicht")
-            }
-        })
+    const playNextQuestion = () => {
+        resetAnswers()
+        playNext()
     }
 
     return (
-
         <QuestionContainer>
-            <h3>{question.questionText}</h3>
-            <AnswerContainer>
-                {question.answers.map(answer => (
-                    <Answer answer={answer} key={answer.id} questionId={question.id} handleChoice={handleChoice}/>
-                ))}
-            </AnswerContainer>
-            <CheckButton onClick={validateAnswer}>Check Answer</CheckButton>
+            <form onSubmit={validateAnswer}>
+                <h3>{question.questionText}</h3>
+                <AnswerContainer>
+                    {question.answers.map(answer => (
+                        <Answer answer={answer} key={answer.id} questionId={question.id} sendChosenId={setChosenId}/>
+                    ))}
+
+                    {answerIsCorrect === undefined && <div>Please choose an answer...</div>}
+                    {answerIsCorrect === true && <AnswerIsCorrect>Correct</AnswerIsCorrect> }
+                    {answerIsCorrect === false && <AnswerIsWrong>Wrong! Try again</AnswerIsWrong>}
+
+                </AnswerContainer>
+                <CheckButton>Check Answer</CheckButton>
+
+                {answerIsCorrect === true && <CheckButton onClick={playNextQuestion}>Next Question</CheckButton> }
+            </form>
         </QuestionContainer>
     )
 }
@@ -53,7 +54,6 @@ const AnswerContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 0 0;
   grid-template-areas:
     '. .'
     '. .';
@@ -83,3 +83,12 @@ const CheckButton = styled.button`
     top: 1px;
   }
 `
+
+const AnswerIsCorrect = styled.div`
+  color: green;
+`
+const AnswerIsWrong = styled.div`
+  color: red;
+`
+
+

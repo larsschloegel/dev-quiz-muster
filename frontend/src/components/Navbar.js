@@ -1,13 +1,16 @@
-import { NavLink } from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import styled from 'styled-components'
+
 function Navbar() {
-  return (
-    <NavBarContainer>
-      <NavItem to="/">Home</NavItem>
-      <NavItem to="/add-question">Add Question</NavItem>
-    </NavBarContainer>
-  )
+    return (
+        <NavBarContainer>
+            <NavItem to="/">Home</NavItem>
+            <NavItem to="/add-question">Add Question</NavItem>
+            <NavItem to="/play">Play</NavItem>
+        </NavBarContainer>
+    )
 }
+
 export default Navbar
 
 const NavBarContainer = styled.section`
@@ -17,6 +20,7 @@ const NavBarContainer = styled.section`
 `
 const NavItem = styled(NavLink)`
   color: white;
+
   &hover {
     color: #aec5eb;
   }

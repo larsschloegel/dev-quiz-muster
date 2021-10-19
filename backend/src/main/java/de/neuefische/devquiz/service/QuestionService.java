@@ -1,19 +1,18 @@
 package de.neuefische.devquiz.service;
+
 import de.neuefische.devquiz.model.Answer;
-import de.neuefische.devquiz.model.ValidationInfo;
 import de.neuefische.devquiz.model.Question;
 import de.neuefische.devquiz.repo.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class QuestionService {
 
     private final QuestionRepo questionRepo;
+
 
     @Autowired
     public QuestionService(QuestionRepo questionRepo) {
@@ -24,35 +23,24 @@ public class QuestionService {
         return questionRepo.findAll();
     }
 
-    public Question addQuestion(Question newQuestion){
+    public Question addQuestion(Question newQuestion) {
+        for (Answer answer: newQuestion.getAnswers()){
+            answer.setId(createUUID());
+        }
         return questionRepo.save(newQuestion);
+    }
+
+    private String createUUID() {
+        return UUID.randomUUID().toString();
     }
 
     public Question get(String id) {
         Optional<Question> optionalQuestion = questionRepo.findById(id);
-
         if (optionalQuestion.isEmpty()) {
             throw new NoSuchElementException("Question with id:" + id + " not found!");
         }
-
         return optionalQuestion.get();
     }
 
-    public ValidationInfo validateQuestion(ValidationInfo InputQuestionIdAndAnswerId) {
-       Optional<Question> questionToCheck = questionRepo.findById(InputQuestionIdAndAnswerId.getQuestionID());
-
-        if (questionToCheck.isEmpty()){
-            throw new NoSuchElementException("Question with id: " + InputQuestionIdAndAnswerId.getQuestionID() +
-                    " not found!");
-        }
-        List<Answer> allAnswer = questionToCheck.get().getAnswers();
-        ValidationInfo validationAnswer= new ValidationInfo(InputQuestionIdAndAnswerId.getQuestionID(), null);
-        for (Answer answer : allAnswer){
-            if(answer.isCorrect()){
-                validationAnswer.setAnswerID(answer.getId());
-            }
-        }
-        return validationAnswer;
-    }
 
 }
