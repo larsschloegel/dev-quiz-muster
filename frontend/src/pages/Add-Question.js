@@ -1,75 +1,83 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { useState } from 'react'
+import {useState} from 'react'
 import NewQuestion from '../components/NewQuestion'
-export default function AddQuestion({ saveQuestion }) {
-  const [question, setQuestions] = useState({
-    questionText: '',
-    answers: [
-      {
-        answerText: '',
-        correct: false,
-      },
-      {
-        answerText: '',
-        correct: false,
-      },
-    ],
-  })
 
-  const handleAnswerTextInput = (e, index) => {
-    const newQuestionObject = { ...question }
-    newQuestionObject.answers[index].answerText = e.target.value
-    setQuestions(newQuestionObject)
-  }
+export default function AddQuestion({saveQuestion}) {
 
-  const handleAnswerCorrectStatusChange = (index) => {
-    const newQuestionObject = { ...question }
+    const [question, setQuestions] = useState({
+        questionText: '',
+        answers: [
+            {
+                id: "1",
+                answerText: '',
+                correct: false
+            },
+            {
+                id: "2",
+                answerText: '',
+                correct: false
+            },
+        ],
+    })
 
-    for (let i = 0; i < newQuestionObject.answers.length; i++) {
-      newQuestionObject.answers[i].correct = i === index
+    const handleAnswerTextInput = (e, index) => {
+        const newQuestionObject = {...question}
+        newQuestionObject.answers[index].answerText = e.target.value
+        setQuestions(newQuestionObject)
     }
 
-    setQuestions(newQuestionObject)
-  }
+    const handleAnswerCorrectStatusChange = (index) => {
+        const newQuestionObject = {...question}
 
-  const createNewAnswerOption = () => {
-    const newQuestionObject = { ...question }
-    newQuestionObject.answers.push({
-      answerText: '',
-      correct: false,
-    })
-    setQuestions(newQuestionObject)
-  }
+        for (let i = 0; i < newQuestionObject.answers.length; i++) {
+            if (i === index) {
+                newQuestionObject.answers[i].correct = true;
+            } else {
+                newQuestionObject.answers[i].correct = false;
+            }
+        }
+        setQuestions(newQuestionObject)
+    }
 
-  const handleQuestionTextInput = e => {
-    setQuestions({ ...question, questionText: e.target.value })
-  }
+    const createNewAnswerOption = () => {
+        const newQuestionObject = {...question}
+        newQuestionObject.answers.push({
+            answerText: '',
+            correct: false,
+        })
+        setQuestions(newQuestionObject)
+    }
 
-  return (
-    <section>
-      <Heading>Add Question Page</Heading>
-      <FormContainer>
-        <NewQuestion
-          question={question}
-          answers={question.answers}
-          handleAnswerTextInput={handleAnswerTextInput}
-          handleAnswerCorrectStatusChange={handleAnswerCorrectStatusChange}
-          handleQuestionTextInput={handleQuestionTextInput}
-        />
-      </FormContainer>
-      <ButtonContainer>
-        <Button onClick={createNewAnswerOption}>Create Answeroption</Button>
-        <Button
-          onClick={() => {
-            saveQuestion(question)
-          }}
-        >
-          Save Question
-        </Button>
-      </ButtonContainer>
-    </section>
-  )
+    const handleQuestionTextInput = e => {
+        setQuestions({...question, questionText: e.target.value})
+    }
+
+    return (
+        <section>
+            <Heading>Add Question Page</Heading>
+            <FormContainer>
+                <NewQuestion
+                    question={question}
+                    answers={question.answers}
+                    handleAnswerTextInput={handleAnswerTextInput}
+                    handleAnswerCorrectStatusChange={handleAnswerCorrectStatusChange}
+                    handleQuestionTextInput={handleQuestionTextInput}
+                />
+            </FormContainer>
+            <ButtonContainer>
+                <Button onClick={createNewAnswerOption}>Create Answeroption</Button>
+                <Button
+                    onClick={() => {
+                        console.log((question))
+                        saveQuestion(question)
+                    }}
+                >
+                    Save Question
+                </Button>
+            </ButtonContainer>
+        </section>
+    )
 }
 
 const Heading = styled.h2`
@@ -107,6 +115,7 @@ const Button = styled.button`
     background-color: #dfdfdf;
     color: #757780;
   }
+
   &:active {
     position: relative;
     top: 1px;

@@ -1,18 +1,18 @@
 package de.neuefische.devquiz.service;
 
+import de.neuefische.devquiz.model.Answer;
 import de.neuefische.devquiz.model.Question;
 import de.neuefische.devquiz.repo.QuestionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class QuestionService {
 
     private final QuestionRepo questionRepo;
+
 
     @Autowired
     public QuestionService(QuestionRepo questionRepo) {
@@ -23,18 +23,24 @@ public class QuestionService {
         return questionRepo.findAll();
     }
 
-    public Question addQuestion(Question newQuestion){
+    public Question addQuestion(Question newQuestion) {
+        for (Answer answer: newQuestion.getAnswers()){
+            answer.setId(createUUID());
+        }
         return questionRepo.save(newQuestion);
     }
 
+    private String createUUID() {
+        return UUID.randomUUID().toString();
+    }
 
     public Question get(String id) {
         Optional<Question> optionalQuestion = questionRepo.findById(id);
-
         if (optionalQuestion.isEmpty()) {
             throw new NoSuchElementException("Question with id:" + id + " not found!");
         }
-
         return optionalQuestion.get();
     }
+
+
 }

@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepo extends PagingAndSortingRepository<Question, String> {
+
     List<Question> findAll();
+
 
 }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/question")
@@ -29,8 +28,11 @@ public class QuestionController {
         return questionService.get(id);
     }
 
+
     @PostMapping()
     public Question addQuestion(@RequestBody Question newQuestion) {
         return questionService.addQuestion(newQuestion);
     }
+
+
 }

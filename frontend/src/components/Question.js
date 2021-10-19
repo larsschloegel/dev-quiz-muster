@@ -1,20 +1,44 @@
 import * as React from 'react'
 import Answer from './Answer'
 import styled from 'styled-components'
+import {useState} from "react";
 
-function Question({ question }) {
-  return (
-    <QuestionContainer>
-      <h3>{question.questionText}</h3>
-      <AnswerContainer>
-        {question.answers.map(answer => (
-          <Answer answer={answer} key={answer.id} questionId={question.id} />
-        ))}
-      </AnswerContainer>
-      <CheckButton>Check Answer</CheckButton>
-    </QuestionContainer>
-  )
+function Question({question, checkIfCorrect, answerIsCorrect, playNext, resetAnswers}) {
+
+    const [chosenId, setChosenId] = useState("")
+
+    const validateAnswer = event => {
+        event.preventDefault()
+        checkIfCorrect(question, chosenId)
+    }
+
+    const playNextQuestion = () => {
+        resetAnswers()
+        playNext()
+    }
+
+    return (
+        <QuestionContainer>
+            <form onSubmit={validateAnswer}>
+                <h3>{question.questionText}</h3>
+                <AnswerContainer>
+                    {question.answers.map(answer => (
+                        <Answer answer={answer} key={answer.id} questionId={question.id} sendChosenId={setChosenId}/>
+                    ))}
+
+                    {answerIsCorrect === undefined && <div>Please choose an answer...</div>}
+                    {answerIsCorrect === true && <AnswerIsCorrect>Correct</AnswerIsCorrect> }
+                    {answerIsCorrect === false && <AnswerIsWrong>Wrong! Try again</AnswerIsWrong>}
+
+                </AnswerContainer>
+                <CheckButton>Check Answer</CheckButton>
+
+                {answerIsCorrect === true && <CheckButton onClick={playNextQuestion}>Next Question</CheckButton> }
+            </form>
+        </QuestionContainer>
+    )
 }
+
 export default Question
 
 const QuestionContainer = styled.section`
@@ -30,13 +54,12 @@ const AnswerContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 0px 0px;
   grid-template-areas:
     '. .'
     '. .';
 `
 const CheckButton = styled.button`
-  box-shadow: inset 0px 1px 0px 0px #ffffff;
+  box-shadow: inset 0 1px 0 0 #ffffff;
   background-color: #757780;
   border-radius: 6px;
   border: 1px solid #dcdcdc;
@@ -54,8 +77,18 @@ const CheckButton = styled.button`
     background-color: #dfdfdf;
     color: #757780;
   }
+
   &:active {
     position: relative;
     top: 1px;
   }
 `
+
+const AnswerIsCorrect = styled.div`
+  color: green;
+`
+const AnswerIsWrong = styled.div`
+  color: red;
+`
+
+

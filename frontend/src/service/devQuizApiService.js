@@ -13,3 +13,22 @@ export function addQuestion(newQuestion) {
     .then(response => response.data)
     .catch(console.error)
 }
+
+export function getQuestion(){
+  return axios
+      .get('/api/question/quiz')
+      .then(response => response.data)
+      .catch(console.error)
+}
+export function checkAnswer(question, chosenId){
+
+  const answerValidation = {
+    question : question,
+    chosenId : chosenId
+  }
+
+  return axios
+      .post('/api/question/quiz', answerValidation )
+      .then(response => response.data)
+      .catch(console.error)
+}
