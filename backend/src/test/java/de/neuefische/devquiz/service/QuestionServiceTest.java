@@ -7,7 +7,6 @@ import de.neuefische.devquiz.repo.QuestionRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.tokens.AliasToken;
 
 import java.util.List;
 import java.util.NoSuchElementException;

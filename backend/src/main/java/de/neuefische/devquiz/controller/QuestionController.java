@@ -11,12 +11,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/question")
-public class DevQuizController {
+public class QuestionController {
 
     private final QuestionService questionService;
 
     @Autowired
-    public DevQuizController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
     }
 
