@@ -3,6 +3,7 @@ package de.neuefische.devquiz.controller.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -35,6 +36,14 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         log.error("Unknown Error!", ex);
         ApiError apiError = new ApiError("Unknown Error!", ex.getMessage());
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiError> handleBadCredentialException(BadCredentialsException ex){
+
+        log.error("Username or password are not valid", ex);
+        ApiError apiError = new ApiError("Username and password are not valid!", ex.getMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
 
     }
 

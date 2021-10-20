@@ -1,6 +1,6 @@
-package de.neuefische.devquiz.repo;
+package de.neuefische.devquiz.security.repo;
 
-import de.neuefische.devquiz.model.AppUser;
+import de.neuefische.devquiz.security.model.AppUser;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

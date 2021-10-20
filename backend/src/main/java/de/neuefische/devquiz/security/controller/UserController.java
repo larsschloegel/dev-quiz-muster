@@ -1,6 +1,6 @@
-package de.neuefische.devquiz.controller;
+package de.neuefische.devquiz.security.controller;
 
-import de.neuefische.devquiz.model.ActualUser;
+import de.neuefische.devquiz.security.model.ActualUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package de.neuefische.devquiz.model;
+package de.neuefische.devquiz.security.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

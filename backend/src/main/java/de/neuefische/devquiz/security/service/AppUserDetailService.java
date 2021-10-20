@@ -1,7 +1,7 @@
-package de.neuefische.devquiz.service;
+package de.neuefische.devquiz.security.service;
 
-import de.neuefische.devquiz.model.AppUser;
-import de.neuefische.devquiz.repo.AppUserRepo;
+import de.neuefische.devquiz.security.model.AppUser;
+import de.neuefische.devquiz.security.repo.AppUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
