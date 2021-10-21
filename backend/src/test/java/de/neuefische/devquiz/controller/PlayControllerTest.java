@@ -4,14 +4,16 @@ import de.neuefische.devquiz.model.Answer;
 import de.neuefische.devquiz.model.AnswerValidation;
 import de.neuefische.devquiz.model.Question;
 import de.neuefische.devquiz.repo.QuestionRepo;
+import de.neuefische.devquiz.security.model.AppUser;
+import de.neuefische.devquiz.security.repo.AppUserRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +24,12 @@ import static org.hamcrest.Matchers.is;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PlayControllerTest {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AppUserRepo userRepo;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -58,7 +66,7 @@ class PlayControllerTest {
         questionRepo.save(expected);
 
         //WHEN
-        ResponseEntity<Question> responseEntity = testRestTemplate.getForEntity("/api/question/quiz", Question.class);
+        ResponseEntity<Question> responseEntity = testRestTemplate.exchange("/api/question/quiz", HttpMethod.GET, new HttpEntity<>(getHttpHeadersWithJWT()), Question.class);
 
         //THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
@@ -68,6 +76,8 @@ class PlayControllerTest {
     @Test
     @DisplayName("Should return true for a correctly chosen answer")
     void testCheckAnswerTrue() {
+
+        HttpHeaders headers = getHttpHeadersWithJWT();
 
         //GIVEN
         Answer answer1 = new Answer();
@@ -87,7 +97,7 @@ class PlayControllerTest {
         AnswerValidation answerValidation = new AnswerValidation(question, chosenId);
 
         //WHEN
-        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/quiz", answerValidation, Boolean.class );
+        ResponseEntity<Boolean> responseEntity = testRestTemplate.exchange("/api/question/quiz", HttpMethod.POST, new HttpEntity<>(answerValidation, headers ) , Boolean.class );
 
         //THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
@@ -99,6 +109,8 @@ class PlayControllerTest {
     @Test
     @DisplayName("Should return false for a incorrectly chosen answer")
     void testCheckAnswerFalse() {
+
+        HttpHeaders headers = getHttpHeadersWithJWT();
 
         //GIVEN
         Answer answer1 = new Answer();
@@ -118,10 +130,19 @@ class PlayControllerTest {
         AnswerValidation answerValidation = new AnswerValidation(question, chosenId);
 
         //WHEN
-        ResponseEntity<Boolean> responseEntity = testRestTemplate.postForEntity("/api/question/quiz", answerValidation, Boolean.class );
+        ResponseEntity<Boolean> responseEntity = testRestTemplate.exchange("/api/question/quiz", HttpMethod.POST, new HttpEntity<>(answerValidation, headers), Boolean.class );
 
         //THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
         assertThat(responseEntity.getBody(), is(Boolean.FALSE));
+    }
+
+    private HttpHeaders getHttpHeadersWithJWT() {
+        userRepo.save(AppUser.builder().username("test_username").password(passwordEncoder.encode("some-password")).build());
+        AppUser loginData = new AppUser("test_username", "some-password");
+        ResponseEntity<String> response = testRestTemplate.postForEntity("/auth/login", loginData, String.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(response.getBody());
+        return headers;
     }
 }
