@@ -63,15 +63,12 @@ class UserControllerTest {
     void getLoggedInUserWithExpiredToken() {
         //GIVEN
         HttpHeaders headers = new HttpHeaders();
-
-        //ReflectionTestUtils.setField(jwtUtilService, "duration", 1);
+        ReflectionTestUtils.setField(jwtUtilService, "duration", 0);
         headers.setBearerAuth(jwtUtilService.createToken(new HashMap<>(), "test_username"));
-
-        headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0LXVzZXIiLCJleHAiOjE2MzQ3Mzc1NTQsImlhdCI6MTYzNDczNzQ5NH0.hRz2tvtXjLbof29HFGWTcGGk8VxliVoD17Yhl-uEPdw");
+        //headers.setBearerAuth("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0LXVzZXIiLCJleHAiOjE2MzQ3Mzc1NTQsImlhdCI6MTYzNDczNzQ5NH0.hRz2tvtXjLbof29HFGWTcGGk8VxliVoD17Yhl-uEPdw");
         //WHEN
         ResponseEntity<ActualUser> response = restTemplate.exchange("/api/user/me", HttpMethod.GET, new HttpEntity<>(headers), ActualUser.class);
         //THEN
-
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
     }
 
