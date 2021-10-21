@@ -6,6 +6,8 @@ import de.neuefische.devquiz.model.Question;
 import de.neuefische.devquiz.model.ValidationInfo;
 import de.neuefische.devquiz.repo.QuestionRepo;
 
+import de.neuefische.devquiz.security.model.AppUser;
+import de.neuefische.devquiz.security.repo.AppUserRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,8 +16,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -24,12 +29,20 @@ import static org.hamcrest.Matchers.arrayContainingInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.springframework.http.*;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class DevQuizControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AppUserRepo userRepo;
 
     @Autowired
     private QuestionRepo questionRepo;
@@ -51,7 +64,8 @@ class DevQuizControllerTest {
         questionRepo.save(new Question("2", "Question with ID '2'", List.of()));
         questionRepo.save(new Question("3", "Question with ID '3'", List.of()));
         // WHEN
-        ResponseEntity<Question[]> responseEntity = testRestTemplate.getForEntity("/api/question", Question[].class);
+        ResponseEntity<Question[]> responseEntity = testRestTemplate.exchange("/api/question", HttpMethod.GET,
+                new HttpEntity<>(getHttpHeadersWithJWT()), Question[].class);
         // THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
         assertThat(responseEntity.getBody(), arrayContainingInAnyOrder(
@@ -67,25 +81,25 @@ class DevQuizControllerTest {
     void testGet() {
         // GIVEN
         Question question = new Question("302", "Question with ID '302'", List.of());
-
         questionRepo.save(question);
         // WHEN
-        ResponseEntity<Question> responseEntity = testRestTemplate.getForEntity("/api/question/" + question.getId(), Question.class);
+        ResponseEntity<Question> responseEntity = testRestTemplate.exchange("/api/question/302", HttpMethod.GET,
+                new HttpEntity<>(getHttpHeadersWithJWT()), Question.class);
         // THEN
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
         assertThat(responseEntity.getBody(), is(new Question("302", "Question with ID '302'", List.of())));
-
     }
 
     @Test
     @DisplayName("Should add a new question item to the db")
     void testAddQuestion() {
+        HttpHeaders headers = getHttpHeadersWithJWT();
+
         // GIVEN
         Question questionToAdd = new Question("22", "This is a question", List.of());
 
-
         // WHEN
-        ResponseEntity<Question> postResponseEntity = testRestTemplate.postForEntity("/api/question/", questionToAdd, Question.class);
+        ResponseEntity<Question> postResponseEntity = testRestTemplate.exchange("/api/question/", HttpMethod.POST, new HttpEntity<>(questionToAdd, headers), Question.class);
         Question actual = postResponseEntity.getBody();
 
         // THEN
@@ -94,7 +108,8 @@ class DevQuizControllerTest {
         assertThat(actual, is(new Question("22", "This is a question", List.of())));
 
         // THEN - check via GET
-        ResponseEntity<Question> getResponse = testRestTemplate.getForEntity("/api/question/" + questionToAdd.getId(), Question.class);
+        String actualId = actual.getId();
+        ResponseEntity<Question> getResponse = testRestTemplate.exchange("/api/question/" + actualId, HttpMethod.GET, new HttpEntity<>(headers), Question.class);
         Question persistedQuestion = getResponse.getBody();
 
         assertNotNull(persistedQuestion);
@@ -103,27 +118,12 @@ class DevQuizControllerTest {
 
     }
 
-    @Test
-    @DisplayName("Should return the right answer")
-    void testValidateQuestion() {
-        // GIVEN
-        Question questionToValidate = new Question("302", "Question with ID '302'", List.of(
-                new Answer("bc0ff0d7-9a23-4708-b545-07a6c14f1d24", "a", true)
-        ));
-        ResponseEntity<Question> postResponseEntity = testRestTemplate.postForEntity("/api" +
-                "/question", questionToValidate, Question.class);
-        ValidationInfo validationInfo = new ValidationInfo("302" ,"bc0ff0d7-9a23-4708-b545" +
-                "-07a6c14f1d24");
-        // WHEN
-        ResponseEntity<ValidationInfo> postResponseValidationInfo =
-                testRestTemplate.postForEntity("/api/question/validate", validationInfo,
-                        ValidationInfo.class);
-        ValidationInfo actual = postResponseValidationInfo.getBody();
-
-        // THEN
-        assertThat(postResponseValidationInfo.getStatusCode(), is(HttpStatus.OK));
-        assertNotNull(actual);
-        assertThat(actual, is(validationInfo));
+    private HttpHeaders getHttpHeadersWithJWT() {
+        userRepo.save(AppUser.builder().username("test_username").password(passwordEncoder.encode("some-password")).build());
+        AppUser loginData = new AppUser("test_username", "some-password");
+        ResponseEntity<String> response = testRestTemplate.postForEntity("/auth/login", loginData, String.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(response.getBody());
+        return headers;
     }
-
 }
