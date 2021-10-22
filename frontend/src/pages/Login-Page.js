@@ -1,11 +1,13 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {AuthContext} from "../context/AuthProvider";
 
 const initialState = {
     username: "",
     password: "",
 }
-export default function LoginPage({login}) {
+export default function LoginPage() {
     const [credentials, setCredentials] = useState(initialState);
+    const {auth} = useContext(AuthContext)
 
     const handleChange = event => {
         setCredentials({ ...credentials, [event.target.name]: event.target.value })
@@ -13,7 +15,8 @@ export default function LoginPage({login}) {
 
     const handleSubmit = event => {
         event.preventDefault()
-        login(credentials.username, credentials.password)
+        auth(credentials.username, credentials.password)
+        //login(credentials)
     }
 
     return (
