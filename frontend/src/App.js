@@ -10,6 +10,7 @@ import {getQuestion} from "./service/devQuizApiService";
 import LoginPage from "./pages/Login-Page";
 import  {AuthContext} from "./context/AuthProvider";
 import PrivateRoute from "./routing/PrivateRoute";
+import GitHubRedirectPage from "./pages/GitHubRedirectPage";
 
 function App() {
 
@@ -32,6 +33,9 @@ function App() {
 
             <Header/>
                 <Switch>
+                    <Route exact path="/oauth/github/redirect">
+                        <GitHubRedirectPage/>
+                    </Route>
                     <PrivateRoute exact path="/">
                         <Homepage questions={questions}/>
                     </PrivateRoute>
