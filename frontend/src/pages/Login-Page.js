@@ -7,7 +7,7 @@ const initialState = {
 }
 export default function LoginPage() {
     const [credentials, setCredentials] = useState(initialState);
-    const {auth} = useContext(AuthContext)
+    const {login} = useContext(AuthContext)
     const client_id = "d29a927b3859396a4ad4";
 
     const handleChange = event => {
@@ -16,7 +16,7 @@ export default function LoginPage() {
 
     const handleSubmit = event => {
         event.preventDefault()
-        auth(credentials.username, credentials.password)
+        login(credentials)
     }
 
     const loginWithGithub = () => {

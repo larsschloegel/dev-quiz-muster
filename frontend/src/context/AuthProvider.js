@@ -11,10 +11,13 @@ export default function AuthProvider({children}){
     const[token, setToken] = useState()
     const history = useHistory()
 
-    const auth = (username, password) => {
-        login(username, password)
-            .then(token => setToken(token))
+    const login = (credentials) => {
+        axios
+            .post("/auth/login", credentials)
+            .then((res => res.data))
+            .then(setToken)
             .then(() => history.push("/"))
+            .catch(error => console.error(error.message))
     }
 
     const loginWithGithub = code => {
@@ -27,6 +30,6 @@ export default function AuthProvider({children}){
     }
 
     return (
-        <AuthContext.Provider value={{token, auth, loginWithGithub}}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{token, login, loginWithGithub}}>{children}</AuthContext.Provider>
     )
 }

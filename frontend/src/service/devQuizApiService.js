@@ -38,17 +38,3 @@ export function checkAnswer(question, chosenId, token){
       .then(response => response.data)
       .catch(console.error)
 }
-
-export function login(username, password) {
-
-  const credentials = {
-    username: username,
-    password: password,
-  }
-
-  return axios
-      .post('/auth/login', credentials)
-      .then(response => response.data)
-      .catch(console.error)
-
-}
