@@ -5,7 +5,6 @@ import de.neuefische.devquiz.security.service.JWTUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,6 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/auth/login")
-@EnableAuthorizationServer
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
