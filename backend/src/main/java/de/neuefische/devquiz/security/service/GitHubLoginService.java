@@ -2,6 +2,7 @@ package de.neuefische.devquiz.security.service;
 
 
 import de.neuefische.devquiz.security.api.GitHubApiService;
+import de.neuefische.devquiz.security.model.GitHubUserDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +19,7 @@ public class GitHubLoginService {
         String gitHubToken = gitHubApiService.retrieveGitHubToken(code);
 
         //Retrieve User Info
+        GitHubUserDto gitHubUserDto = gitHubApiService.retrieveUserInfo(gitHubToken);
 
         //Create JWT access token
 
