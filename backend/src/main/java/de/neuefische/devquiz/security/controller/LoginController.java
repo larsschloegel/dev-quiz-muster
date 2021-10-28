@@ -26,12 +26,12 @@ public class LoginController {
     }
 
     @PostMapping
-    public String login(@RequestBody AppUser appUser){
+    public String login(@RequestBody AppUser appUser) {
 
         this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(appUser.getUsername(), appUser.getPassword()));
 
         //Create a real token!
-        return  jwtUtilService.createToken(new HashMap<>(),appUser.getUsername());
+        return jwtUtilService.createToken(new HashMap<>(), appUser.getUsername());
     }
 }
