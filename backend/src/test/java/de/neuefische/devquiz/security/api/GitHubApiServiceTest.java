@@ -16,7 +16,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@Disabled
 class GitHubApiServiceTest {
     private final RestTemplate restTemplate = mock(RestTemplate.class);
     private GitHubApiService gitHubApiService = new GitHubApiService(restTemplate);
