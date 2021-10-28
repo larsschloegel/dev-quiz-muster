@@ -7,6 +7,7 @@ export default function GitHubRedirectPage(){
     const [data, setData] = useState({errorMessage: "", isLoading: false});
     const {loginWithGithub} = useContext(AuthContext)
 
+
     useEffect(() => {
         const url = window.location.href;
         const hasCode = url.includes("?code=");
@@ -20,6 +21,7 @@ export default function GitHubRedirectPage(){
                 code: newUrl[1]
             };
             loginWithGithub(requestData.code)
+            console.log(requestData.code)
         }
     }, [data]);
 
